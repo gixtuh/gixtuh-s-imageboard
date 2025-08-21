@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title id="threadwebtitle">board</title>
+<style>
+body { font-family: sans-serif; padding: 20px; }
+.reply { border: 1px solid #ccc; margin: 10px 0; padding: 10px; }
+img { max-width: 200px; display: block; margin-top: 5px; }
+</style>
+</head>
+<body>
+<a href="index.html">← back to boardss</a>
+<h4 id="threadInfo"></h4>
+<h1 id="threadTitle"></h1>
+<div id="threadContent"></div>
+
+<h2>reply</h2>
+<form id="replyForm" enctype="multipart/form-data">
+  message: <input name="content"><br>
+  image: <input type="file" name="image"><br>
+  <button>reply</button>
+</form>
+
+<h2>replies</h2>
+<div id="replies"></div>
+
+<script>
+const params = new URLSearchParams(location.search);
+const threadId = params.get('id');
+
+async function loadThread() {
+  const res = await fetch('/thread/' + threadId);
+  const t = await res.json();
+  document.getElementById('threadInfo').innerHTML = `
+  created at: ${t.createdAt}<br>
+  id: ${t.id}
+  `;
+  document.getElementById('threadTitle').textContent = t.title;
+  document.getElementById('threadwebtitle').textContent = `board: ${t.title}`;
+  document.getElementById('threadContent').innerHTML = `
+    ${t.content}<br>
+    ${t.image ? `<img src="${t.image}">` : ''}
+  `;
+  const repliesDiv = document.getElementById('replies');
+  repliesDiv.innerHTML = '';
+  t.replies.slice().reverse().forEach(r => {
+    const div = document.createElement('div');
+    div.className = 'reply';
+    div.innerHTML = `
+      ${r.content}<br>
+      ${r.image ? `<img src="${r.image}">` : ''}<br>
+      created at: ${r.createdAt}<br>
+      id: ${r.id}
+    `;
+    repliesDiv.appendChild(div);
+  });
+}
+
+document.getElementById('replyForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const form = e.target;
+  const data = new FormData(form);
+  await fetch('/reply/' + threadId, { method: 'POST', body: data });
+  form.reset();
+  loadThread();
+});
+
+loadThread();
+</script>
+</body>
+</html>
