@@ -1,9 +1,11 @@
 {
   "threads":[
-    "id":"_1_",
-    "title":"sorry",
-    "content":"vercel doesnt like writing files",
-    "image":null,
-    "createdAt":""
+    {
+      "id":"_1_",
+      "title":"sorry",
+      "content":"vercel doesnt like writing files",
+      "image":null,
+      "createdAt":""
+    }
   ]
 }
