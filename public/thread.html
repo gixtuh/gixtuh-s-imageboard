@@ -6,11 +6,23 @@
 <style>
 body { font-family: sans-serif; padding: 20px; }
 .reply { border: 1px solid #ccc; margin: 10px 0; padding: 10px; }
-img { max-width: 200px; display: block; margin-top: 5px; }
+img { 
+    max-width: 200px; 
+    display: block; 
+    margin-top: 5px; 
+  
+    /* blur effect */
+    filter: blur(20px); 
+    transition: filter 0.3s ease;
+    cursor: pointer;
+  }
+  img:active { 
+    filter: blur(0); 
+  }
 </style>
 </head>
 <body>
-<a href="index.html">← back to boardss</a>
+<a href="home.html">← back to boardss</a>
 <h4 id="threadInfo"></h4>
 <h1 id="threadTitle"></h1>
 <div id="threadContent"></div>
